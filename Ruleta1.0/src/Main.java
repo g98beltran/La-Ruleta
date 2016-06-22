@@ -1,3 +1,5 @@
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.util.Random;
 
@@ -10,9 +12,9 @@ public class Main{
 	public static void main(String[] args) {
 	// TODO Auto-generated method stub
 	//variables
-	int diners = 30,aposta = 0,pasta = 0;
+	int diners = 30,aposta = 0,pasta = 0,pastacolor = 0;
 	boolean apostar = false,numero = false,color = false;
-	int triacolor, trianumero ,pastacolor = 0;
+	int triacolor = 2, trianumero = 2 ;
 	String q1 = "";					
 	//instancies
 	Random rand = new Random(System.nanoTime());
@@ -25,24 +27,30 @@ public class Main{
 	//pre joc
 	while(diners > 0){
 	int aleatorio = rand.nextInt(36);
-	q1 ="Introdueix \n- 1 per apostar a numero\n- 0 si no vols";// apostar a un numero 0,1,2,..36
-	trianumero = u.inputInteger(q1);
-	if(trianumero == 1){
+	String[] n = new String[] {"Si","No"};
+	trianumero = u.option("Vols Apostar a numero", "numero", n);//Si = 0 no = 1
+	if(trianumero == -1){
+		System.exit(0);
+	}
+	if(trianumero == 0){
 		numero = true;
 	}
 	if(numero){
-		q1 ="Introdueix el nº al que apostes: ";
+		q1 ="Quin Nº?";
 		aposta = u.inputInteger(q1);//numero
-		q1 ="Introdueix el dines q apostes";
+		q1 ="Quants Dines?";
 		pasta = u.inputInteger(q1);//dines
-	}					
-	q1 = "Introdueix\n- 1 per apostar al roig\n- 2 per apostar al negre\n- 0 si no....";
-	triacolor = u.inputInteger(q1);//color roig o negre
-	if(triacolor == 1 || triacolor ==2){
+	}
+	String[] c = new String[] {"Roig","Negre","No"};
+	triacolor = u.option("A quin color apostes?", "Color", c);//color roig o negre
+	if(triacolor == -1){
+		System.exit(0);
+	}
+	if(triacolor == 0 || triacolor == 1){
 		color = true;
 	}
 	if(color){
-		q1 = "Quant vols apostar al color: ";
+		q1 = "Quants dines?";
 		pastacolor = u.inputInteger(q1);//dines
 	}
 	if(color || numero){
@@ -50,15 +58,21 @@ public class Main{
 	}								
 	//Joc	
 	while(apostar){
-		q1 = "El nº q ha ixit es: "+aleatorio;
-		u.show(q1);//num que ha ixit
 		apostar = false;
-		a.ApostarNumero(numero, diners, pastacolor, q1, aposta, aleatorio);
-		a.ApostarColor(color, q1, aleatorio, diners, pastacolor, triacolor);
-		}		
-	}
+		q1 = "Ha ixit ->"+aleatorio;
+		u.show(q1);//num que ha ixit		
+		if(numero){
+			a.ApostarNumero(diners, pasta, q1, aposta, aleatorio);
+		}
+		numero = false;
+		if(color){
+			a.ApostarColor(q1, aleatorio, diners, pastacolor, triacolor);
+		}
+		color = false;
+	}		
+}
 	q1 = "Programed by Gerard & Isma";
 	u.show(q1);
 	//The End..
-  }
+ }
 }
